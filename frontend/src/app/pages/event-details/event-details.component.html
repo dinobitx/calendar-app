@@ -1,0 +1,18 @@
+<div class="top-actions">
+  <button type="button" class="back-btn" (click)="router.navigate(['/'])">
+    &lt;
+  </button>
+</div>
+
+<div class="container" *ngIf="event">
+  <h2>{{ event.title }}</h2>
+  <p *ngIf="event.description">{{ event.description }}</p>
+  <p><strong>Start:</strong> {{ event.startDateTime | date:'short' }}</p>
+  <p><strong>End:</strong> {{ event.endDateTime | date:'short' }}</p>
+  <p *ngIf="event.location"><strong>Location:</strong> {{ event.location }}</p>
+
+  <div class="actions">
+    <button class="edit-btn" (click)="edit()">Edit</button>
+    <button class="delete-btn" (click)="delete()">Delete</button>
+  </div>
+</div>

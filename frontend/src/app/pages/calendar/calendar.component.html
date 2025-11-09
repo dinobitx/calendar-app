@@ -1,0 +1,29 @@
+<div class="calendar-header">
+  <button class="nav-btn" (click)="prevMonth()">&lt;</button>
+  <h2>{{ currentDate | date:'MMMM y' }}</h2>
+  <button class="nav-btn" (click)="nextMonth()">&gt;</button>
+  <button class="add-btn" (click)="addEvent()">+ Add Event</button>
+</div>
+
+
+<div class="calendar-grid">
+  <div class="day-name" *ngFor="let d of ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']">
+    {{ d }}
+  </div>
+
+  <ng-container *ngFor="let week of weeks">
+    <div class="day-cell" *ngFor="let day of week" (click)="openDay(day.day)">
+      <div class="day" [class.empty]="!day.day">
+        <div class="day-number" *ngIf="day.day">{{ day.day }}</div>
+        <div class="events">
+          <div
+            class="event-pill"
+            *ngFor="let ev of day.events"
+            (click)="openEvent(ev, $event)">
+            {{ ev.title }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

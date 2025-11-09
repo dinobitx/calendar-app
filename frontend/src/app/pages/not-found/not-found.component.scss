@@ -1,0 +1,46 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #f7f9fc;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+.wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  padding-top: 40px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px 25px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+p {
+  margin: 6px 0;
+  color: #1a1a1a;
+}
+
+.hint {
+  color: #4f5f7a;
+  margin-bottom: 14px;
+  font-style: italic;
+}
+
+.home-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}

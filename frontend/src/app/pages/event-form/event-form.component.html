@@ -1,0 +1,55 @@
+<div class="top-actions">
+  <button type="button" class="back-btn" (click)="back()">
+    &lt;
+  </button>
+</div>
+
+<h2>{{ isEdit ? 'Edit Event' : 'Add Event' }}</h2>
+
+<form #form="ngForm" novalidate (ngSubmit)="submit(form)">
+  <label>Title *</label>
+  <input
+    type="text"
+    name="title"
+    [(ngModel)]="model.title"
+    required
+    #titleModel="ngModel"
+  />
+  <div class="field-error" *ngIf="titleModel.invalid && titleModel.touched">
+    Title is required
+  </div>
+
+  <label>Description</label>
+  <textarea [(ngModel)]="model.description" name="description"></textarea>
+
+  <label>Start Date & Time *</label>
+  <input
+    type="datetime-local"
+    name="startDateTime"
+    [(ngModel)]="model.startDateTime"
+    required
+    #startModel="ngModel"
+  />
+  <div class="field-error" *ngIf="startModel.invalid && startModel.touched">
+    Start date & time is required
+  </div>
+
+  <label>End Date & Time *</label>
+  <input
+    type="datetime-local"
+    name="endDateTime"
+    [(ngModel)]="model.endDateTime"
+    required
+    #endModel="ngModel"
+  />
+  <div class="field-error" *ngIf="endModel.invalid && endModel.touched">
+    End date & time is required
+  </div>
+
+  <label>Location</label>
+  <input type="text" name="location" [(ngModel)]="model.location" />
+
+  <div class="error" *ngIf="error">{{ error }}</div>
+
+  <button type="submit">{{ isEdit ? 'Update' : 'Save' }}</button>
+</form>
