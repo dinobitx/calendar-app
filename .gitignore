@@ -1,0 +1,15 @@
+# root
+.DS_Store
+.idea
+.vscode
+
+# backend
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# frontend
+frontend/node_modules/
+frontend/dist/
+
+# docker
+**/.env
