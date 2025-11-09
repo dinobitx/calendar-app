@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,50 +14,48 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, String> fieldErrors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors()
+        ex.getBindingResult()
+                .getFieldErrors()
                 .forEach(err -> fieldErrors.put(err.getField(), err.getDefaultMessage()));
 
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", 400);
-        body.put("error", "Validation failed");
-        body.put("fields", fieldErrors);
+        ErrorResponse body = ErrorResponse.withFields(
+                HttpStatus.BAD_REQUEST.value(),
+                "Validation failed",
+                fieldErrors
+        );
 
         return ResponseEntity.badRequest().body(body);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String, Object>> handleIllegalArgument(IllegalArgumentException ex) {
-        return ResponseEntity.badRequest().body(Map.of(
-                "status", 400,
-                "error", ex.getMessage()
-        ));
+    public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException ex) {
+        ErrorResponse body = ErrorResponse.of(
+                HttpStatus.BAD_REQUEST.value(),
+                "Bad request",
+                ex.getMessage()
+        );
+        return ResponseEntity.badRequest().body(body);
     }
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<Map<String, Object>> handleResponseStatus(ResponseStatusException ex) {
-        return ResponseEntity
-                .status(ex.getStatusCode())
-                .body(Map.of(
-                        "timestamp", LocalDateTime.now(),
-                        "status", ex.getStatusCode().value(),
-                        "error", ex.getReason(),
-                        "path", "N/A"
-                ));
+    public ResponseEntity<ErrorResponse> handleResponseStatus(ResponseStatusException ex) {
+        ErrorResponse body = ErrorResponse.of(
+                ex.getStatusCode().value(),
+                ex.getReason(),
+                ex.getMessage()
+        );
+        return ResponseEntity.status(ex.getStatusCode()).body(body);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, Object>> handleGeneral(Exception ex) {
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of(
-                        "timestamp", LocalDateTime.now(),
-                        "status", 500,
-                        "error", "Internal server error",
-                        "message", ex.getMessage()
-                ));
+    public ResponseEntity<ErrorResponse> handleGeneral(Exception ex) {
+        ErrorResponse body = ErrorResponse.of(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Internal server error",
+                ex.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }
 }
-

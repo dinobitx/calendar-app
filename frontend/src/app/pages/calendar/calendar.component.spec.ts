@@ -1,4 +1,3 @@
-// src/app/pages/calendar/calendar.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CalendarComponent } from './calendar.component';
 import { EventsService } from '../../service/events.service';
@@ -30,14 +29,13 @@ describe('CalendarComponent', () => {
   it('loads events and generates calendar on init', () => {
     eventsServiceSpy.getAll.and.returnValue(of([]));
 
-    fixture.detectChanges(); // triggers ngOnInit
+    fixture.detectChanges();
 
     expect(eventsServiceSpy.getAll).toHaveBeenCalled();
     expect(component.weeks.length).toBeGreaterThan(0);
   });
 
   it('marks day as having events when event date matches current month', () => {
-    // событие на 5-е число текущего месяца
     const today = component.currentDate;
     const evt = {
       id: 1,
@@ -51,7 +49,6 @@ describe('CalendarComponent', () => {
 
     fixture.detectChanges();
 
-    // ищем в weeks день 5 и проверяем, что у него есть events
     const flat = component.weeks.flat();
     const day5 = flat.find(d => d.day === 5);
     expect(day5).toBeTruthy();

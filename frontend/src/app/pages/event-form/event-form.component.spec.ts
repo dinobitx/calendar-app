@@ -10,7 +10,6 @@ describe('EventFormComponent', () => {
   let fixture: ComponentFixture<EventFormComponent>;
   let component: EventFormComponent;
 
-  // моки
   let eventsServiceSpy: jasmine.SpyObj<EventsService>;
   let routerSpy: jasmine.SpyObj<Router>;
 
@@ -23,13 +22,12 @@ describe('EventFormComponent', () => {
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
-      imports: [EventFormComponent],           // standalone-компонент
+      imports: [EventFormComponent],
       providers: [
         DateTimeService,
         FormValidationService,
         { provide: EventsService, useValue: eventsServiceSpy },
         { provide: Router, useValue: routerSpy },
-        // по умолчанию — без query-параметров
         {
           provide: ActivatedRoute,
           useValue: {
@@ -48,14 +46,13 @@ describe('EventFormComponent', () => {
   });
 
   it('should init with current time when no query param', () => {
-    fixture.detectChanges(); // ngOnInit
+    fixture.detectChanges();
 
     expect(component.model.startDateTime).toContain('T');
     expect(component.model.endDateTime).toContain('T');
   });
 
   it('should load event when id is present', () => {
-    // подменяем ActivatedRoute уже после первой конфигурации
     const ar = TestBed.inject(ActivatedRoute) as any;
     ar.snapshot.queryParamMap.get = (name: string) => (name === 'id' ? '7' : null);
 
@@ -70,7 +67,6 @@ describe('EventFormComponent', () => {
 
     eventsServiceSpy.getById.and.returnValue(of(backendEvent));
 
-    // нужно пересоздать компонент, чтобы сработал новый ActivatedRoute
     fixture = TestBed.createComponent(EventFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -82,14 +78,12 @@ describe('EventFormComponent', () => {
   it('should not save when validation fails', () => {
     fixture.detectChanges();
 
-    // делаем модель невалидной
     component.model.title = '';
     component.model.startDateTime = '';
     component.model.endDateTime = '';
 
-    // ⬇️ главное — передать controls: {}
     component.submit({
-      invalid: false,          // твой метод всё равно валидирует модель
+      invalid: false,
       controls: {}
     } as any);
 

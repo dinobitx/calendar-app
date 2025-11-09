@@ -44,7 +44,7 @@ export class CalendarComponent implements OnInit {
     const month = this.currentDate.getMonth();
 
     const firstDay = new Date(year, month, 1);
-    const startDay = firstDay.getDay() === 0 ? 7 : firstDay.getDay(); // 1-7
+    const startDay = firstDay.getDay() === 0 ? 7 : firstDay.getDay();
 
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 

@@ -33,7 +33,6 @@ export class EventFormComponent implements OnInit {
     const idFromQuery = this.route.snapshot.queryParamMap.get('id');
     const dateFromQuery = this.route.snapshot.queryParamMap.get('date');
 
-    // режим редактирования
     if (idFromQuery) {
       this.isEdit = true;
       this.editedId = Number(idFromQuery);
@@ -43,7 +42,6 @@ export class EventFormComponent implements OnInit {
       return;
     }
 
-    // если пришла дата из календаря
     if (dateFromQuery) {
       const base = this.dateTimeService.parseDateParamUseCurrentTime(dateFromQuery);
       this.model.startDateTime = this.dateTimeService.toLocalInput(base);
@@ -53,7 +51,6 @@ export class EventFormComponent implements OnInit {
       return;
     }
 
-    // 👇 сюда попадём, если просто нажали "Add Event"
     const now = new Date();
     this.model.startDateTime = this.dateTimeService.toLocalInput(now);
 
